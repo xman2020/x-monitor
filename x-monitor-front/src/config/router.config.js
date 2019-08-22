@@ -16,7 +16,7 @@ export const asyncRouterMap = [
         path: '/monitor',
         name: 'monitor',
         redirect: '/monitor/metric-manage',
-        component: RouteView,
+        component: PageView,
         meta: { title: '监控平台', keepAlive: true, icon: bxAnaalyse, permission: [ 'dashboard' ] },
         children: [
           {
