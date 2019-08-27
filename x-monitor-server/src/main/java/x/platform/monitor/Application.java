@@ -3,7 +3,6 @@ package x.platform.monitor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.stereotype.Controller;
@@ -20,9 +19,6 @@ import x.platform.monitor.service.intf.MetricService;
 @ComponentScan(basePackages = {"x.platform.monitor"})
 public class Application {
 
-    @Autowired
-    private MetricService metricService;
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
@@ -32,6 +28,11 @@ public class Application {
     public String hello() {
         return "HelloWorld!";
     }
+
+    //---------------------------------------------------------
+
+    @Autowired
+    private MetricService metricService;
 
     @RequestMapping("/test/metric/add")
     @ResponseBody

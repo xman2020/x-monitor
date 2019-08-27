@@ -8,7 +8,7 @@ public class Metric {
 
     private String subKey;
 
-    private String values;
+//    private String values;
 
     private String objType;
 
@@ -44,13 +44,13 @@ public class Metric {
         this.subKey = subKey;
     }
 
-    public String getValues() {
-        return values;
-    }
-
-    public void setValues(String values) {
-        this.values = values;
-    }
+//    public String getValues() {
+//        return values;
+//    }
+//
+//    public void setValues(String values) {
+//        this.values = values;
+//    }
 
     public String getObjType() {
         return objType;

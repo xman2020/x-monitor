@@ -1,11 +1,11 @@
 -- ----------------------------
---  Table structure for `METRIC_MAIN`
+--  Table structure for `METRIC`
 -- ----------------------------
-DROP TABLE IF EXISTS `METRIC_MAIN`;
-CREATE TABLE `METRIC_MAIN` (
+DROP TABLE IF EXISTS `METRIC`;
+CREATE TABLE `METRIC` (
   `MAIN_KEY` varchar(32) NOT NULL,
   `SUB_KEY` varchar(32) DEFAULT NULL,
-  `VALUES` varchar(1024) DEFAULT NULL,
+  `VALUE` varchar(1024) DEFAULT NULL,
   `OBJ_TYPE` varchar(4) DEFAULT NULL,
   `OBJ_NO` varchar(12) DEFAULT NULL,
   `MAIN_TYPE` varchar(8) DEFAULT NULL,
