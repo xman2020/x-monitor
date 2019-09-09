@@ -155,4 +155,27 @@ public class Metric {
     public void setValue(String value) {
         this.value = value;
     }
+
+    //---------------------------------------------------------
+
+    private Date collectTimeFrom;
+
+    private Date collectTimeTo;
+
+    public Date getCollectTimeFrom() {
+        return collectTimeFrom;
+    }
+
+    public void setCollectTimeFrom(Date collectTimeFrom) {
+        this.collectTimeFrom = collectTimeFrom;
+    }
+
+    public Date getCollectTimeTo() {
+        return collectTimeTo;
+    }
+
+    public void setCollectTimeTo(Date collectTimeTo) {
+        this.collectTimeTo = collectTimeTo;
+    }
+
 }
