@@ -26,7 +26,7 @@ public class MetricMdbKafka implements MetricMdb {
         this.kafkaTemplate.send("metric", metricJson);
     }
 
-    @KafkaListener(topics = "metric")
+    //@KafkaListener(topics = "metric")
     public void receiveMetric(ConsumerRecord<String, String> record) {
         Metric metric = JSON.parseObject(record.value(), Metric.class);
         this.metricService.add(metric);

@@ -12,6 +12,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="ofjar" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-web:2.1.7.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter:2.1.7.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot:2.1.7.RELEASE" level="project" />
@@ -80,6 +81,5 @@
     <orderEntry type="library" name="Maven: com.alibaba:fastjson:1.2.51" level="project" />
     <orderEntry type="library" name="Maven: x.framework:x-framework-lang:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.26" level="project" />
-    <orderEntry type="library" name="ofjar" level="project" />
   </component>
 </module>
