@@ -12,6 +12,23 @@ export const asyncRouterMap = [
     redirect: '/dashboard/workplace',
     children: [
       {
+        // 服务平台
+        path: '/service',
+        name: 'service',
+        redirect: '/service/service-manage',
+        component: PageView,
+        meta: { title: '服务平台', keepAlive: true, icon: bxAnaalyse, permission: [ 'dashboard' ] },
+        children: [
+          {
+            path: '/service/provider-add',
+            name: 'ProviderAdd',
+            component: () => import('@/views/service/ProviderForm'),
+            meta: { title: '新增提供者', keepAlive: true, permission: [ 'dashboard' ] }
+          }
+        ]
+      },
+
+      {
         // 监控平台
         path: '/monitor',
         name: 'monitor',
