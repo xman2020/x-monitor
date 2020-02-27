@@ -1,0 +1,19 @@
+kind: Service.define
+version: v1
+id: queryMetric
+name: queryMetric
+desc: 查询指标
+status: ENABLE/DISABLE
+providerId: metric
+type: POST/GET/BEAN
+# Comsumer调用URL http://xServiceIp:xServicePort/serviceId/xxx/yyy?a=b&c=d
+# 转发给Provider的URL http://providerNodeIp:providerNodePort/providerNodePath/servciePath/xxx/yyy?a=b&c=d
+path: /queryMetric
+# 本地Bean调用，本地执行method
+invoke: 
+  beanName: metric
+  method: queryMetric
+sample: # 预留，不是必须
+  params: params # URL的?后的参数
+  data:  data # POST请求的参数
+  response: response # 响应的内容

@@ -1,0 +1,10 @@
+kind: ServiceAuth.define
+version: v1
+serviceId: queryMetric
+consumerId: trade/ANONYMOUS # ANONYMOUS为未认证的消费者
+status: ENABLE/DISABLE
+begin: 2020-02-01 00:00:00
+end: 2020-02-20 23:59:59
+ctrl:
+  time: # 时间规则，比如最近5分钟
+  threshold: 10 # 不能超过10次

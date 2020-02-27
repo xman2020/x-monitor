@@ -1,0 +1,8 @@
+kind: Consumer.define
+version: v1
+id: trade
+name: trade
+desc: 交易系统
+status: ENABLE/DISABLE
+auth: NO/TOKEN/HASH/SESSION/RSA
+authKey: abc123

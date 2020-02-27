@@ -1,26 +1,16 @@
-// 只能新增提供者
+// 新增、修改提供者，节点信息弹出层录入
 <template>
   <a-form :form="form">
     <a-card title="基本信息" style="margin-bottom: 8px">
       <a-row>
         <a-col :span="12">
-          <a-form-item label="提供者ID" :labelCol="labelCol" :wrapperCol="wrapperCol">
-            <a-input
-              v-decorator="['id', { rules: [{ required: true, message: '请输入提供者ID' }] }]"
-              placeholder="请输入提供者ID"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item label="提供者名称" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-form-item label="名称" :labelCol="labelCol" :wrapperCol="wrapperCol">
             <a-input
               v-decorator="['name', { rules: [{ required: true, message: '请输入提供者名称' }] }]"
               placeholder="请输入提供者名称"
             />
           </a-form-item>
         </a-col>
-      </a-row>
-      <a-row>
         <a-col :span="12">
           <a-form-item label="描述" :labelCol="labelCol" :wrapperCol="wrapperCol">
             <a-input
@@ -29,6 +19,8 @@
             />
           </a-form-item>
         </a-col>
+      </a-row>
+      <a-row>
         <a-col :span="12">
           <a-form-item label="状态" :labelCol="labelCol" :wrapperCol="wrapperCol">
             <a-select v-decorator="['status', { initialValue: 'DISABLE' }]">
@@ -37,8 +29,6 @@
             </a-select>
           </a-form-item>
         </a-col>
-      </a-row>
-      <a-row>
         <a-col :span="12">
           <a-form-item label="类型" :labelCol="labelCol" :wrapperCol="wrapperCol">
             <a-select v-decorator="['type', { initialValue: 'HTTP' }]">
@@ -48,13 +38,13 @@
             </a-select>
           </a-form-item>
         </a-col>
+      </a-row>
+      <a-row>
         <a-col :span="12">
           <a-form-item label="路径" :labelCol="labelCol" :wrapperCol="wrapperCol">
             <a-input v-decorator="['path']" placeholder="请输入路径" />
           </a-form-item>
         </a-col>
-      </a-row>
-      <a-row>
         <a-col :span="12">
           <a-form-item label="负载均衡" :labelCol="labelCol" :wrapperCol="wrapperCol">
             <a-select v-decorator="['loadBalance', { initialValue: 'RANDOM' }]">
@@ -67,7 +57,7 @@
       </a-row>
     </a-card>
     <a-card title="节点信息">
-      <a-table :columns="nodeColumns" :dataSource="nodes" :pagination="false">
+      <a-table :columns="nodeColumns" :dataSource="provider.nodes" :pagination="false">
         <template slot="ip" slot-scope="text, record">
           <a-input
             v-model="record.ip"
@@ -113,6 +103,7 @@
 <script>
 import providerApi from '@/api/providerApi'
 import FooterToolBar from '@/components/FooterToolbar'
+import pick from 'lodash.pick'
 
 export default {
   name: 'ProviderForm',
@@ -121,8 +112,8 @@ export default {
   },
   data () {
     return {
-      labelCol: { lg: { span: 7 }, sm: { span: 7 } },
-      wrapperCol: { lg: { span: 10 }, sm: { span: 17 } },
+      labelCol: { lg: { span: 6 }, sm: { span: 6 } },
+      wrapperCol: { lg: { span: 14 }, sm: { span: 14 } },
       form: this.$form.createForm(this),
       nodeColumns: [
         {
@@ -159,37 +150,59 @@ export default {
           scopedSlots: { customRender: 'operation' }
         }
       ],
-      nodes: [
-        {
-          ip: '172.22.0.1',
-          port: 8080
-        }
-      ]
+      id: null,
+      provider: {
+        nodes: [
+          {
+            ip: '172.22.0.2',
+            port: 8080
+          }
+        ]
+      }
     }
   },
-  mounted () {
-    console.log(this.provider)
-    console.log(this.nodes)
-    // this.provider.nodes.push({})
+  created () {
+    console.log('created()')
+    console.log('provider:', this.provider)
+    console.log('id:', this.$route.query.id)
+    this.id = this.$route.query.id
+
+    if (this.id) {
+      console.log('getProvider')
+      providerApi.getProvider({
+        id: this.id
+      }).then(res => {
+        console.log('response:', res)
+        if (res.success) {
+          this.provider = res.data
+          this.form.setFieldsValue(pick(this.provider, 'name', 'desc', 'status', 'type', 'path', 'loadBalance'))
+        }
+      })
+    }
   },
   methods: {
     addNode () {
-      this.nodes.push({})
+      console.log('addNode()')
+      this.provider.nodes.push({})
     },
     deleteNode (record) {
-      console.log(this.nodes)
-      console.log(record)
-      this.nodes = this.nodes.filter(item => item.ip !== record.ip)
+      console.log('deleteNode()')
+      console.log('provider:', this.provider)
+      console.log('node:', record)
+      this.provider.nodes = this.provider.nodes.filter(item => item.ip !== record.ip)
     },
     saveProvider () {
+      console.log('saveProvider()')
       this.form.validateFields((err, values) => {
-        console.log(err)
-        console.log(values)
-        values.nodes = this.nodes
-        console.log(values)
+        console.log('validateErr:', err)
+        console.log('formItems:', values)
+        console.log('provider:', this.provider)
+        Object.assign(this.provider, values)
 
         if (!err) {
-          providerApi.saveProvider(values).then(res => {
+          console.log('providerApi.saveProvider()')
+          providerApi.saveProvider(this.provider).then(res => {
+            console.log('response:', res)
             if (res.success) {
               this.$message.success('提供者保存成功！')
             } else {

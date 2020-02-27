@@ -22,7 +22,7 @@ export const asyncRouterMap = [
           {
             path: '/service/provider-add',
             name: 'ProviderAdd',
-            component: () => import('@/views/service/ProviderForm'),
+            component: () => import('@/views/service/ProviderForm3'),
             meta: { title: '新增提供者', keepAlive: true, permission: [ 'dashboard' ] }
           }
         ]

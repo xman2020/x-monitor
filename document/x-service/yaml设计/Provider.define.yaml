@@ -1,0 +1,16 @@
+kind: Provider.define
+version: v1
+# id: metirc
+name: metirc
+desc: 指标的描述
+status: ENABLE/DISABLE
+type: HTTP/LOCAL/KAFKA
+path: /metric
+loadBalance: RANDOM/ROUND/WEIGHT
+nodes:
+  - ip: 172.22.0.1
+    port: 8080 # 默认80
+    path: /metric # 这里的path覆盖之前的path
+    weight: 20
+  - ip: 172.22.0.2
+    weight: 10
