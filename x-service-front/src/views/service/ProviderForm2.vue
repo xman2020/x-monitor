@@ -6,8 +6,8 @@
         <a-col :span="12">
           <a-form-item label="名称" :labelCol="labelCol" :wrapperCol="wrapperCol">
             <a-input
-              v-decorator="['name', { rules: [{ required: true, message: '请输入提供者名称' }] }]"
-              placeholder="请输入提供者名称"
+              v-decorator="['name', { rules: [{ required: true, message: '请输入名称' }] }]"
+              placeholder="请输入名称"
             />
           </a-form-item>
         </a-col>

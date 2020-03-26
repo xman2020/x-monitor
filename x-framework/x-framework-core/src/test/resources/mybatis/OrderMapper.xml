@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="x.framework.core.dao.route.Order">
+
+  <insert id="insert" parameterType="Order" keyProperty="id" useGeneratedKeys="true">
+    INSERT INTO ${rcp.order}
+       (ORDER_NAME,
+        MONEY,
+        BUYER_ID,
+        BUYER_NAME,
+        CREATED_BY,
+        CREATED_TIME,
+        LAST_UPDATED_BY,
+        LAST_UPDATED_TIME)
+    VALUES 
+       (#{orderName},
+        #{money},
+        #{buyerId},
+        #{buyerName},
+        #{createdBy},
+        #{createdTime},
+        #{lastUpdatedBy},
+        #{lastUpdatedTime})
+  </insert>
+
+  <delete id="deleteById" parameterType="long">
+    DELETE FROM T_ORDER WHERE ID = #{id}
+  </delete>
+  
+  <update id="update" parameterType="Order">
+    UPDATE T_ORDER SET 
+        ORDER_NAME = #{orderName},
+        MONEY = #{money},
+        BUYER_ID = #{buyerId},
+        BUYER_NAME = #{buyerName},
+        CREATED_BY = #{createdBy},
+        CREATED_TIME = #{createdTime},
+        LAST_UPDATED_BY = #{lastUpdatedBy},
+        LAST_UPDATED_TIME = #{lastUpdatedTime}
+      WHERE ID = #{id}
+  </update>
+
+  <sql id="orderColumns">
+    ID, 
+	ORDER_NAME AS orderName,
+	MONEY,
+ 	BUYER_ID AS buyerId,
+ 	BUYER_NAME AS buyerName,
+ 	CREATED_BY AS createdBy,
+	CREATED_TIME AS createdTime,
+	LAST_UPDATED_BY AS lastUpdatedBy,
+	LAST_UPDATED_TIME AS lastUpdatedTime
+  </sql>
+  
+  <select id="getById" parameterType="long" resultType="Order">
+    SELECT <include refid="orderColumns"/>
+    FROM T_ORDER WHERE ID = #{id}
+  </select>
+
+</mapper>

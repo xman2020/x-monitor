@@ -1,0 +1,114 @@
+d<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd"
+  default-autowire="byName">
+
+  <context:property-placeholder location="classpath:application.test.properties" />
+
+  <context:component-scan base-package="x.framework.core" />
+
+  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <property name="driverClassName" value="${jdbc.driverClassName}" />
+    <property name="url" value="${jdbc.url}" />
+    <property name="username" value="${jdbc.username}" />
+    <property name="password" value="${jdbc.password}" />
+  </bean>
+
+  <!--bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> <property name="driverClassName" 
+    value="oracle.jdbc.driver.OracleDriver" /> <property name="url" value="jdbc:oracle:thin:@127.0.0.1:1521:XE" /> <property 
+    name="username" value="HR" / --><!-- sys/system 123456 -->
+  <!--property name="password" value="HR" /> </bean -->
+
+  <bean id="dataSource2" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="${jdbc.driverClassName}" />
+    <property name="url" value="${jdbc.url}" />
+    <property name="username" value="${jdbc.username}" />
+    <property name="password" value="${jdbc.password}" />
+    <property name="initialSize" value="10" />
+    <property name="maxActive" value="30" />
+    <property name="maxWait" value="10000" />
+  </bean>
+
+  <bean id="eppStatDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="com.ibm.db2.jcc.DB2Driver" />
+    <property name="url" value="${jdbc.url.eppstat}" />
+    <property name="username" value="${jdbc.username.eppstat}" />
+    <property name="password" value="${jdbc.password.eppstat}" />
+    <property name="initialSize" value="10" />
+    <property name="maxActive" value="30" />
+    <property name="maxWait" value="10000" />
+  </bean>
+
+  <bean id="oneByOneTemplate" class="x.framework.core.template.OneByOneTemplateImpl">
+    <property name="dataSource" ref="eppStatDataSource" />
+  </bean>
+
+  <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <property name="dataSource" ref="dataSource" />
+    <!-- property name="configLocation" ref="classpath:mybatis-config.xml" / -->
+    <property name="mapperLocations" value="classpath*:mybatis/*.xml" />
+    <property name="typeAliasesPackage" value="x.framework.core.dao" />
+    <property name="plugins">
+      <list>
+        <bean class="x.framework.core.dao.mybatis.plugin.PagePlugin">
+          <property name="dialect">
+            <bean class="x.framework.core.dao.mybatis.dialect.MySqlDialect" />
+          </property>
+        </bean>
+      </list>
+    </property>
+    <property name="typeHandlers">
+      <list>
+        <bean class="x.framework.core.dao.mybatis.typehandler.EnStringTypeHandler" />
+        <bean class="x.framework.core.dao.mybatis.typehandler.EnDateTypeHandler" />
+      </list>
+    </property>
+  </bean>
+
+  <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+    <constructor-arg ref="sqlSessionFactoryBean" />
+  </bean>
+
+  <bean id="myBatisSessionManager" class="x.framework.core.dao.mybatis.MyBatisSessionManager">
+    <property name="sessionMap">
+      <map>
+        <entry key="default" value-ref="sqlSession" />
+      </map>
+    </property>
+  </bean>
+
+  <bean id="daoMyBatis" class="x.framework.core.dao.mybatis.DaoMyBatis" />
+
+  <bean id="dataSourceTransactionManager1" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <qualifier value="datasource1" />
+  </bean>
+
+  <!-- tx:annotation-driven transaction-manager="dataSourceTransactionManager1" order="200" / -->
+
+  <bean id="dataSourceTransactionManager2" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <qualifier value="datasource2" />
+  </bean>
+
+  <!-- tx:annotation-driven transaction-manager="dataSourceTransactionManager2" order="200" / -->
+
+  <tx:annotation-driven order="200" />
+
+  <bean id="serviceTraceInterceptor" class="x.framework.core.trace.ServiceTraceInterceptor">
+    <property name="filterArgs">
+      <value>userName,errorCode,password</value>
+    </property>
+  </bean>
+
+  <aop:config>
+    <aop:pointcut id="serviceTracePointcut" expression="@within(x.framework.core.trace.ServiceTrace)" />
+    <aop:advisor advice-ref="serviceTraceInterceptor" pointcut-ref="serviceTracePointcut" order="100" />
+  </aop:config>
+
+  <aop:config proxy-target-class="true" />
+
+</beans>

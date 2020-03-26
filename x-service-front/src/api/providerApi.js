@@ -42,6 +42,8 @@ mock.mock(/\/getProvider/, 'post', {
       },
       {
         ip: '172.22.0.2',
+        port: null,
+        path: null,
         weight: 10
       }
     ]

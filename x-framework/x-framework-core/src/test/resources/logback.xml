@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+  <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>%date|%thread|%X{invokeNo}|%X{ip}|%X{user}|%level|%logger{0}|%msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>x-framework-core-test.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>x-framework-core-test.%d{yyyy-MM-dd}.log</fileNamePattern>
+      <!--<maxHistory>10</maxHistory>-->
+    </rollingPolicy>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>%date|%thread|%X{invokeNo}|%X{ip}|%X{user}|%msg%n</pattern>
+    </encoder>
+  </appender>
+  
+  <root>
+    <level value="DEBUG" />
+    <appender-ref ref="stdout"/>
+  </root>
+</configuration>

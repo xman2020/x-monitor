@@ -2,3 +2,8 @@ x-monitor-server/.idea
 x-monitor-server/target
 .svn
 LdapUtils.java
+.idea
+/target
+x-framework/x-framework-core/target
+x-framework/x-framework-lang/target
+x-framework/x-framework-security/target

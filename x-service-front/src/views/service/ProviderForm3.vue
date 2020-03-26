@@ -6,8 +6,8 @@
         <a-col :span="12">
           <a-form-item label="名称" :labelCol="labelCol" :wrapperCol="wrapperCol">
             <a-input
-              v-decorator="['name', { rules: [{ required: true, message: '请输入提供者名称' }] }]"
-              placeholder="请输入提供者名称"
+              v-decorator="['name', { rules: [{ required: true, message: '请输入名称' }] }]"
+              placeholder="请输入名称"
             />
           </a-form-item>
         </a-col>
@@ -57,8 +57,8 @@
       </a-row>
     </a-card>
     <a-card title="节点信息">
-      <a-table :columns="nodeColumns" :dataSource="provider.nodes" :pagination="false">
-        <template slot="ip" slot-scope="text, record">
+      <a-table ref="nodeTable" :columns="nodeColumns" :dataSource="provider.nodes" :pagination="false">
+        <!--template slot="ip" slot-scope="text, record">
           <a-input
             v-model="record.ip"
             v-decorator="['ip', { rules: [{ required: true, message: '请输入节点IP' }] }]"
@@ -85,8 +85,10 @@
             v-decorator="['weight', { rules: [{ required: true, message: '请输入权重' }] }]"
             placeholder="请输入权重"
           />
-        </template>
+        </template-->
         <template slot="operation" slot-scope="text, record">
+          <a @click="modifyNode(record)">修改</a>
+          <a-divider type="vertical" />
           <a-popconfirm title="是否要删除此节点？" @confirm="deleteNode(record)">
             <a>删除</a>
           </a-popconfirm>
@@ -94,6 +96,7 @@
       </a-table>
       <a-button style="width: 100%; margin-top: 16px; margin-bottom: 8px" type="dashed" icon="plus" @click="addNode">新增节点</a-button>
     </a-card>
+    <node-form ref="nodeForm" @confirm="nfConfirm" />
     <footer-tool-bar>
       <a-button type="primary" @click="saveProvider" :loading="false">保存</a-button>
     </footer-tool-bar>
@@ -103,12 +106,13 @@
 <script>
 import providerApi from '@/api/providerApi'
 import FooterToolBar from '@/components/FooterToolbar'
+import NodeForm from './modules/NodeForm'
 import pick from 'lodash.pick'
 
 export default {
   name: 'ProviderForm',
   components: {
-    FooterToolBar
+    FooterToolBar, NodeForm
   },
   data () {
     return {
@@ -158,7 +162,8 @@ export default {
             port: 8080
           }
         ]
-      }
+      },
+      selNode: null
     }
   },
   created () {
@@ -183,13 +188,35 @@ export default {
   methods: {
     addNode () {
       console.log('addNode()')
-      this.provider.nodes.push({})
+      this.selNode = null
+      this.$refs.nodeForm.add()
+    },
+    modifyNode (record) {
+      console.log('modifyNode()')
+      console.log('selNode:', record)
+      this.selNode = record
+      this.$refs.nodeForm.modify(record)
+    },
+    nfConfirm (node) {
+      console.log('nfConfirm()')
+      if (node) {
+        console.log('node:', node)
+        if (this.selNode) {
+          // this.selNode.port = node.port
+          // this.$set(this.selNode, 'port', node.port)
+          Object.assign(this.selNode, node)
+          console.log('selNode:', this.selNode)
+        } else {
+          this.provider.nodes.push(node)
+        }
+        console.log('nodes:', this.provider.nodes)
+      }
     },
     deleteNode (record) {
       console.log('deleteNode()')
-      console.log('provider:', this.provider)
       console.log('node:', record)
       this.provider.nodes = this.provider.nodes.filter(item => item.ip !== record.ip)
+      console.log('provider:', this.provider)
     },
     saveProvider () {
       console.log('saveProvider()')

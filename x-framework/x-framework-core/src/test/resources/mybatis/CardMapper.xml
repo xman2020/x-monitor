@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="x.framework.core.dao.Card">
+
+  <!-- MYSQL -->
+  <insert id="insert" parameterType="Card" keyProperty="id" useGeneratedKeys="true">
+    INSERT INTO CARD
+       (USER_NAME,
+        REAL_NAME,
+        EMAIL,
+        MOBILE,
+        PASSWORD,
+        CREATED_BY,
+        CREATED_TIME,
+        LAST_UPDATED_BY,
+        LAST_UPDATED_TIME)
+    VALUES 
+       (#{userName},
+        #{realName},
+        #{email},
+        #{mobile},
+        #{password},
+        #{createdBy},
+        #{createdTime},
+        #{lastUpdatedBy},
+        #{lastUpdatedTime})
+  </insert>
+  
+  <!-- DB2 -->
+  <insert id="insert2" parameterType="Card">
+    <selectKey keyProperty="id" resultType="long" order="BEFORE">
+      SELECT SEQ_CARD.NEXTVAL FROM SYSIBM.SYSDUMMY1
+    </selectKey>
+    INSERT INTO CARD
+       (ID,
+        USER_NAME,
+        REAL_NAME,
+        EMAIL,
+        MOBILE,
+        PASSWORD,
+        CREATED_BY,
+        CREATED_TIME,
+        LAST_UPDATED_BY,
+        LAST_UPDATED_TIME)
+    VALUES 
+       (#{id},
+        #{userName},
+        #{realName},
+        #{email},
+        #{mobile},
+        #{password},
+        #{createdBy},
+        #{createdTime},
+        #{lastUpdatedBy},
+        #{lastUpdatedTime})
+  </insert>
+  
+  <!-- Oracle -->
+  <insert id="insert1" parameterType="Card">
+    <selectKey keyProperty="id" resultType="long" order="BEFORE">
+      SELECT SEQ_CARD.NEXTVAL FROM DUAL
+    </selectKey>
+    INSERT INTO CARD
+       (ID,
+        USER_NAME,
+        REAL_NAME,
+        EMAIL,
+        MOBILE,
+        PASSWORD,
+        CREATED_BY,
+        CREATED_TIME,
+        LAST_UPDATED_BY,
+        LAST_UPDATED_TIME)
+    VALUES 
+       (#{id},
+        #{userName},
+        #{realName},
+        #{email},
+        #{mobile},
+        #{password},
+        #{createdBy},
+        #{createdTime},
+        #{lastUpdatedBy},
+        #{lastUpdatedTime}
+        <!-- #{lastUpdatedBy,jdbcType=VARCHAR}, -->
+        <!-- #{lastUpdatedTime,jdbcType=DATE} -->)
+  </insert>
+
+  <delete id="deleteById" parameterType="long">
+    DELETE FROM CARD WHERE ID = #{id}
+  </delete>
+  
+  <update id="update" parameterType="Card">
+    UPDATE CARD SET 
+        USER_NAME = #{userName},
+        REAL_NAME = #{realName},
+        EMAIL = #{email},
+        MOBILE = #{mobile},
+        PASSWORD = #{password},
+        CREATED_BY = #{createdBy},
+        CREATED_TIME = #{createdTime},
+        LAST_UPDATED_BY = #{lastUpdatedBy},
+        LAST_UPDATED_TIME = #{lastUpdatedTime}
+      WHERE ID = #{id}
+  </update>
+
+  <sql id="cardColumns">
+    ID, 
+	USER_NAME AS userName,
+	REAL_NAME AS realName,
+ 	EMAIL,
+ 	MOBILE,
+  	PASSWORD,
+ 	CREATED_BY AS createdBy,
+	CREATED_TIME AS createdTime,
+	LAST_UPDATED_BY AS lastUpdatedBy,
+	LAST_UPDATED_TIME AS lastUpdatedTime
+  </sql>
+  
+  <select id="getById" parameterType="long" resultType="Card">
+    SELECT <include refid="cardColumns"/>
+    FROM CARD WHERE ID = #{id}
+  </select>
+
+  <select id="queryByMobile" parameterType="string" resultType="Card">
+    SELECT <include refid="cardColumns"/>
+    FROM CARD WHERE MOBILE = #{mobile} order by id
+  </select>
+  
+  <select id="queryByMobileCount" parameterType="string" resultType="long">
+    SELECT COUNT(*)
+    FROM CARD WHERE MOBILE = #{mobile}
+  </select>
+  
+</mapper>
