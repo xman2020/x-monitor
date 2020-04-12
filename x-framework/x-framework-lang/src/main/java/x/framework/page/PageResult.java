@@ -13,20 +13,17 @@ import x.framework.lang.Result;
  * 
  * @author xman 2010-7-31
  */
-public class PageList<T> extends Result {
+public class PageResult<T> extends Result<List<T>> {
 
     private static final long serialVersionUID = -3729460386670004909L;
 
     /** 分页 */
     protected Page            page;
 
-    /** 数据列表 */
-    protected List<T>         list;
-
     /**
      * 构造函数
      */
-    public PageList() {
+    public PageResult() {
         super();
     }
 
@@ -35,10 +32,10 @@ public class PageList<T> extends Result {
      * @param page 分页
      * @param list 数据列表
      */
-    public PageList(Page page, List<T> list) {
+    public PageResult(Page page, List<T> list) {
         super();
         this.page = page;
-        this.list = list;
+        this.data = list;
     }
 
     /**
@@ -62,7 +59,7 @@ public class PageList<T> extends Result {
      * @return 数据列表
      */
     public List<T> getList() {
-        return list;
+        return data;
     }
 
     /**
@@ -70,7 +67,7 @@ public class PageList<T> extends Result {
      * @param list 数据列表
      */
     public void setList(List<T> list) {
-        this.list = list;
+        this.data = list;
     }
 
 }

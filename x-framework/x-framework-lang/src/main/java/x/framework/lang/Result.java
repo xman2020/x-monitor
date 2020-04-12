@@ -8,10 +8,10 @@ import java.io.Serializable;
 
 /**
  * 结果类
- * 
+ *
  * @author xman 2010-7-17
  */
-public class Result implements Serializable {
+public class Result<T> implements Serializable {
 
     private static final long serialVersionUID = 4425372968541587317L;
 
@@ -23,9 +23,12 @@ public class Result implements Serializable {
 
     /** 结果信息 */
     protected String          message          = "";
-    
-    /**错误码参数*/
+
+    /** 错误码参数 */
     protected String[] args;
+
+    /** 结果数据 */
+    protected T data;
 
     /**
      * 拷贝结果
@@ -68,7 +71,7 @@ public class Result implements Serializable {
         this.errorCode = errorCode;
         this.message = message;
     }
-    
+
     public void fail(String errorCode, String message,String[] args) {
         this.success = false;
         this.errorCode = errorCode;
@@ -136,6 +139,14 @@ public class Result implements Serializable {
      */
     public void setArgs(String[] args) {
         this.args = args;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
     }
 
 }

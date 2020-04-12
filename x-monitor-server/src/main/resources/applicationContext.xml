@@ -21,5 +21,15 @@
   <!--坑：如果文件名是application.xml，自动加载会报错-->
   <!--Document root element "beans", must match DOCTYPE root "null"-->
   <!--把文件名改了，用@ImportResource方式加载，好了-->
+
+  <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <property name="dataSource" ref="dataSource" />
+    <property name="mapperLocations" value="classpath*:mybatis/*.xml" />
+    <property name="typeAliasesPackage" value="x.platform.*.dmo" />
+  </bean>
+  <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
+    <property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryBean"/>
+    <property name="basePackage" value="x.platform.*.dao.intf"/>
+  </bean>
 </beans>
 

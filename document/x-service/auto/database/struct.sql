@@ -1,4 +1,22 @@
 -- ----------------------------
+--  Table structure for `auto_order`
+-- ----------------------------
+DROP TABLE IF EXISTS `auto_order`;
+CREATE TABLE `auto_order` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100),
+  `desc` text,
+  `price` decimal(10,2),
+  `amount` bigint,
+  `total` decimal(10,2),
+  `create_user` varchar(32),
+  `update_user` varchar(32),
+  `create_time` datetime,
+  `update_time` datetime,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
 --  Table structure for `auto_database`
 -- ----------------------------
 DROP TABLE IF EXISTS `auto_database`;

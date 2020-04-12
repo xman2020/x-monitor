@@ -11,7 +11,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import x.framework.lang.StringTools;
 import x.framework.page.Page;
-import x.framework.page.PageList;
+import x.framework.page.PageResult;
 import x.platform.monitor.dao.intf.MetricDao;
 import x.platform.monitor.dmo.Metric;
 
@@ -66,7 +66,7 @@ public class MetricDaoJdbc implements MetricDao {
         return this.npJdbcTemplate.queryForObject(this.getByIdSql, parameters, BeanPropertyRowMapper.newInstance(Metric.class));
     }
 
-    public PageList<Metric> selectByPage(Metric metric, Page page) {
+    public PageResult<Metric> selectByPage(Metric metric, Page page) {
         StringBuilder where = new StringBuilder();
         if (!StringUtils.isEmpty(metric.getObjType())) {
             where.append(" AND OBJ_TYPE=:objType ");
@@ -91,7 +91,7 @@ public class MetricDaoJdbc implements MetricDao {
         String countSql1 = this.countSql + where;
         long count = this.npJdbcTemplate.queryForObject(countSql1, parameters, Long.class);
         page.setCount(count);
-        PageList<Metric> pageList = new PageList(page, null);
+        PageResult<Metric> pageList = new PageResult(page, null);
 
         if (count > 0 ){
             String selectSql1 = this.selectSql + where +

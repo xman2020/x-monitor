@@ -5,10 +5,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import x.framework.page.Page;
-import x.framework.page.PageList;
+import x.framework.page.PageResult;
 import x.platform.monitor.Application;
 import x.platform.monitor.dao.intf.MetricDao;
 import x.platform.monitor.dmo.Metric;
@@ -87,7 +85,7 @@ public class MetricDaoTest {
         metric.setCollectTimeTo(sdf.parse("2019-09-28 23:59:59"));
         Page page = new Page();
         page.setCurrentPage(1);
-        PageList<Metric> pageList = this.metricDao.selectByPage(metric, page);
+        PageResult<Metric> pageList = this.metricDao.selectByPage(metric, page);
     }
 
     //@Test
