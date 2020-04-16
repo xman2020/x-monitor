@@ -51,6 +51,7 @@ public class BaseServiceImpl<Dmo, QueryDto extends BaseQueryDto, Dao extends Map
     public Result<Dmo> getById(Object id) {
         Result<Dmo> result = new Result();
         Dmo dmo = this.dao.selectByPrimaryKey(id);
+        // result.setSuccess(dmo != null);
         result.setData(dmo);
 
         return result;

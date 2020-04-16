@@ -3,9 +3,11 @@ package x.platform.auto.dto;
 import tk.mybatis.mapper.entity.Condition;
 import tk.mybatis.mapper.entity.Example;
 import x.framework.core.dao.mybatis.BaseQueryDto;
+import x.framework.core.dao.mybatis.CriteriaUtils;
 import x.platform.auto.dmo.Order;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -48,11 +50,18 @@ public class OrderQueryDto extends BaseQueryDto {
         Condition condition = new Condition(Order.class);
         Example.Criteria criteria = condition.createCriteria();
 
-        criteria.andLike("name", this.getName());
-        criteria.andLike("memo", this.getMemo());
-        criteria.andBetween("price", this.getPriceFrom(), this.getPriceTo());
-        criteria.andGreaterThan("amount", this.getAmount());
-        criteria.andBetween("updateTime", this.getUpdateTimeFrom(), this.getUpdateTimeTo());
+        CriteriaUtils.andLike(criteria, "name", this.getName());
+        CriteriaUtils.andLike(criteria, "memo", this.getMemo());
+        CriteriaUtils.andBetween(criteria, "price", this.getPriceFrom(), this.getPriceTo());
+        CriteriaUtils.andGreater(criteria, "amount", this.getAmount());
+        CriteriaUtils.andBetween(criteria, "updateTime", this.getUpdateTimeFrom(), this.getUpdateTimeTo());
+
+        // CriteriaUtils.andEqual(criteria, "name", this.getName());
+        // CriteriaUtils.andGreaterEqual(criteria, "price", this.getPrice());
+        // CriteriaUtils.andLess(criteria, "price", this.getPrice());
+        // CriteriaUtils.andLessEqual(criteria,"price", this.getPrice());
+        // CriteriaUtils.andNotBetween(criteria, "price", this.getPriceFrom(), this.getPriceTo());
+        // CriteriaUtils.andIn(criteria,"name", this.getName());
 
         condition.orderBy("updateTime").desc();
 
@@ -153,6 +162,22 @@ public class OrderQueryDto extends BaseQueryDto {
 
     public Date getUpdateTimeTo() {
         return updateTimeTo;
+    }
+
+    public void setPriceFrom(BigDecimal priceFrom) {
+        this.priceFrom = priceFrom;
+    }
+
+    public void setPriceTo(BigDecimal priceTo) {
+        this.priceTo = priceTo;
+    }
+
+    public void setUpdateTimeFrom(Date updateTimeFrom) {
+        this.updateTimeFrom = updateTimeFrom;
+    }
+
+    public void setUpdateTimeTo(Date updateTimeTo) {
+        this.updateTimeTo = updateTimeTo;
     }
 
 }

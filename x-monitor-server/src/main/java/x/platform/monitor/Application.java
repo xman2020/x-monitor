@@ -16,7 +16,7 @@ import x.platform.monitor.service.intf.MetricService;
 @Controller
 @EnableAutoConfiguration
 @ImportResource(value = {"classpath:applicationContext.xml"})
-@ComponentScan(basePackages = {"x.platform.monitor"})
+@ComponentScan(basePackages = {"x.platform.monitor, x.platform.auto"})
 public class Application {
 
     public static void main(String[] args) {

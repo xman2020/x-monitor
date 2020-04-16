@@ -2,10 +2,7 @@ package x.platform.auto.dmo;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * 订单
@@ -52,6 +49,18 @@ public class Order {
     private Date createTime;
 
     private Date updateTime;
+
+    @Transient
+    private String test;
+
+    public String getTest() {
+        return test;
+    }
+    @Transient
+
+    public void setTest(String test) {
+        this.test = test;
+    }
 
     public Long getId() {
         return id;
